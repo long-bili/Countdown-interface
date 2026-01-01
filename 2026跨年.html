@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>2026春节倒计时</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            border-radius: 16px !important;
+        }
+
+        body {
+            width: 100vw;
+            min-height: 100vh;
+            background-color: #ffe6ef;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: "Microsoft Yahei", sans-serif;
+            position: relative;
+            padding: 20px 0 40px 0;
+            opacity: 0;
+            animation: pageFadeIn 1.5s ease forwards;
+            border-radius: 0 !important;
+        }
+
+        @keyframes pageFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, #a8f0e0 8%, transparent 8%),
+                        radial-gradient(circle, #c8a8ff 8%, transparent 8%),
+                        radial-gradient(circle, #ffd0d0 8%, transparent 8%),
+                        radial-gradient(circle, #fff0a8 8%, transparent 8%);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px, 40px 40px, 60px 60px;
+            opacity: 0.3;
+            z-index: 1;
+            pointer-events: none;
+            animation: bgPulse 6s ease-in-out infinite alternate;
+            border-radius: 0 !important;
+        }
+
+        @keyframes bgPulse {
+            from {
+                opacity: 0.2;
+                background-size: 40px 40px;
+            }
+            to {
+                opacity: 0.4;
+                background-size: 45px 45px;
+            }
+        }
+
+        .title-section {
+            text-align: center;
+            z-index: 10;
+            margin-bottom: 1.5rem;
+            margin-top: 1rem;
+            opacity: 0;
+            animation: titleSlideIn 1s ease forwards 0.3s;
+            border-radius: 0 !important;
+            width: 90%;
+            max-width: 1200px;
+        }
+
+        @keyframes titleSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .title {
+            font-size: clamp(2rem, 5vw, 3rem);
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            border-radius: 0 !important;
+        }
+
+        .title-icon {
+            color: #ff4d4f;
+            animation: iconRotate 3s ease-in-out infinite alternate;
+            border-radius: 0 !important;
+        }
+
+        @keyframes iconRotate {
+            from {
+                transform: rotate(-15deg);
+            }
+            to {
+                transform: rotate(15deg);
+            }
+        }
+
+        .date-tag {
+            display: inline-block;
+            padding: 5px 15px;
+            background: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            font-size: clamp(0.8rem, 2vw, 1rem);
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .lunar-date {
+            font-size: clamp(0.7rem, 1.8vw, 0.9rem);
+            color: #999;
+            border-radius: 0 !important;
+        }
+
+        .current-time {
+            font-size: clamp(0.8rem, 2vw, 1rem);
+            color: #666;
+            margin-bottom: 1rem;
+            z-index: 10;
+            opacity: 0;
+            animation: timeFadeIn 1s ease forwards 1s;
+            border-radius: 0 !important;
+            width: 90%;
+            text-align: center;
+            max-width: 1200px;
+        }
+
+        @keyframes timeFadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .countdown {
+            z-index: 10;
+            margin-bottom: 1rem;
+            text-align: center;
+            opacity: 0;
+            transform: scale(0.8);
+            animation: countBounce 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 0.6s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(0.5rem, 3vw, 1.5rem);
+            font-weight: bold;
+            position: relative;
+            border-radius: 0 !important;
+            width: 90%;
+            max-width: 1200px;
+            flex-wrap: wrap;
+        }
+
+        @keyframes countBounce {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            70% {
+                opacity: 1;
+                transform: scale(1.15);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .countdown-num {
+            font-size: clamp(1.5rem, 7vw, 5rem);
+            background: linear-gradient(180deg, #ff004f, #a200ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 2px 8px rgba(255, 0, 79, 0.2);
+            position: relative;
+            z-index: 2;
+            border-radius: 0 !important;
+        }
+
+        .countdown-unit {
+            font-size: clamp(0.6rem, 2vw, 1rem);
+            color: #333;
+            text-align: center;
+            font-weight: 600;
+            margin-top: 0.3rem;
+            border-radius: 0 !important;
+        }
+
+        .countdown-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            border-radius: 0 !important;
+            margin: 0.5rem;
+        }
+
+        .countdown-separator {
+            font-size: clamp(1.5rem, 7vw, 5rem);
+            color: #333;
+            font-weight: bold;
+            align-self: flex-end;
+            padding-bottom: 0.3rem;
+            margin: 0 clamp(0.2rem, 1vw, 0.5rem);
+            border-radius: 0 !important;
+        }
+
+        .flying-num {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: clamp(1.5rem, 7vw, 5rem);
+            background: linear-gradient(180deg, #ff004f, #a200ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            z-index: 1;
+            pointer-events: none;
+            animation: flyCurve 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            border-radius: 0 !important;
+        }
+
+        @keyframes flyCurve {
+            0% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0) scale(1);
+            }
+            50% {
+                opacity: 0.7;
+                transform: translateX(calc(-50% + 30px)) translateY(-20px) scale(0.8);
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(calc(-50% + 60px)) translateY(50px) scale(0.5);
+            }
+        }
+
+        .tip {
+            color: #333;
+            font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+            opacity: 0.8;
+            z-index: 10;
+            letter-spacing: 2px;
+            animation: fadeInOut 2s cubic-bezier(0.175, 0.885, 0.32, 1.1) infinite alternate, tipFadeIn 1s ease forwards 0.9s;
+            margin-bottom: 1rem;
+            text-align: center;
+            opacity: 0;
+            border-radius: 0 !important;
+            width: 90%;
+            max-width: 1200px;
+        }
+
+        @keyframes tipFadeIn {
+            to {
+                opacity: 0.8;
+            }
+        }
+
+        @keyframes fadeInOut {
+            from {
+                opacity: 0.6;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(-5px);
+            }
+        }
+
+        .blessing-btn {
+            padding: 10px 25px;
+            background: linear-gradient(45deg, #ff004f, #a200ff);
+            color: #fff;
+            border: none;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            cursor: pointer;
+            margin-bottom: 2rem;
+            z-index: 10;
+            box-shadow: 0 4px 10px rgba(255, 0, 79, 0.3);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .blessing-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 6px 15px rgba(255, 0, 79, 0.4);
+        }
+
+        /* 烟花秀按钮：保留提前欣赏功能 */
+        .firework-btn {
+            padding: 8px 20px;
+            background: linear-gradient(45deg, #4d79ff, #a200ff);
+            color: #fff;
+            border: none;
+            font-size: clamp(0.8rem, 1.8vw, 1rem);
+            cursor: pointer;
+            margin-bottom: 2rem;
+            z-index: 10;
+            box-shadow: 0 3px 8px rgba(77, 121, 255, 0.3);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .firework-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 5px 12px rgba(77, 121, 255, 0.4);
+        }
+
+        .blessing-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.7);
+            z-index: 150;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0 !important;
+            backdrop-filter: blur(4px);
+        }
+
+        .blessing-modal-content {
+            width: 80vw;
+            max-width: 500px;
+            background: #fff;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            animation: modalIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            position: relative;
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            70% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .blessing-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 44px;
+            height: 44px;
+            background: #f5f5f5;
+            border: none;
+            font-size: 24px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .blessing-modal-close:hover {
+            background: #e0e0e0;
+            color: #ff4d4f;
+            transform: scale(1.1);
+        }
+
+        .blessing-title {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+            border-radius: 0 !important;
+        }
+
+        .blessing-list {
+            list-style: none;
+            margin-bottom: 20px;
+            border-radius: 0 !important;
+        }
+
+        .blessing-item {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: #666;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 12px !important;
+        }
+
+        .info-cards-container {
+            z-index: 10;
+            width: 90%;
+            max-width: 1200px;
+            margin-top: 1rem;
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: containerFadeIn 1s ease forwards 1.8s;
+            border-radius: 0 !important;
+        }
+
+        @keyframes containerFadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .info-cards-title {
+            text-align: center;
+            color: #333;
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
+            margin-bottom: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            position: relative;
+            border-radius: 0 !important;
+        }
+
+        .info-cards-title::after {
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, #ff004f, #4d79ff);
+            border-radius: 1.5px !important;
+        }
+
+        .info-cards {
+            display: flex;
+            gap: clamp(10px, 2vw, 15px);
+            flex-wrap: wrap;
+            justify-content: center;
+            border-radius: 0 !important;
+        }
+
+        .info-card {
+            flex: 1;
+            min-width: 220px;
+            max-width: 350px;
+            padding: 18px;
+            background: #fff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            position: relative;
+            margin-bottom: clamp(10px, 2vw, 15px);
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            animation: cardFlyIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            z-index: 5;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .info-card:nth-child(1) { animation-delay: 2s; }
+        .info-card:nth-child(2) { animation-delay: 2.1s; }
+        .info-card:nth-child(3) { animation-delay: 2.2s; }
+        .info-card:nth-child(4) { animation-delay: 2.3s; }
+        .info-card:nth-child(5) { animation-delay: 2.4s; }
+        .info-card:nth-child(6) { animation-delay: 2.5s; }
+        .info-card:nth-child(7) { animation-delay: 2.6s; }
+        .info-card:nth-child(8) { animation-delay: 2.7s; }
+        .info-card:nth-child(9) { animation-delay: 2.8s; }
+        .info-card:nth-child(10) { animation-delay: 2.9s; }
+        .info-card:nth-child(11) { animation-delay: 3s; }
+        .info-card:nth-child(12) { animation-delay: 3.1s; }
+
+        @keyframes cardFlyIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            70% {
+                opacity: 1;
+                transform: translateY(-5px) scale(1.02);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .info-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .info-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            color: #333;
+            margin-bottom: 12px;
+            font-weight: 600;
+            border-radius: 0 !important;
+        }
+
+        .info-desc {
+            font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+            color: #666;
+            line-height: 1.6;
+            border-radius: 0 !important;
+        }
+
+        .card-fullscreen-mask {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.7);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0 !important;
+            backdrop-filter: blur(8px);
+            overflow: hidden;
+            position: fixed !important;
+            height: 100vh !important;
+        }
+
+        .card-fullscreen {
+            width: 95vw;
+            max-width: 900px;
+            height: 95vh;
+            max-height: 90vh;
+            background: #fff;
+            padding: clamp(20px, 3vw, 30px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            z-index: 99999; 
+            overflow-y: auto;
+            position: relative;
+            scrollbar-width: thin;
+            scrollbar-color: #e0e0e0 #f5f5f5;
+            margin: 0 auto;
+        }
+
+        .card-fullscreen::-webkit-scrollbar {
+            width: 6px;
+        }
+        .card-fullscreen::-webkit-scrollbar-track {
+            background: #f5f5f5;
+            border-radius: 3px !important;
+        }
+        .card-fullscreen::-webkit-scrollbar-thumb {
+            background: #e0e0e0;
+            border-radius: 3px !important;
+        }
+        .card-fullscreen::-webkit-scrollbar-thumb:hover {
+            background: #ccc;
+        }
+
+        .card-fullscreen.in {
+            animation: cardFullscreenIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes cardFullscreenIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            70% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .card-fullscreen.out {
+            animation: cardFullscreenOut 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes cardFullscreenOut {
+            from {
+                opacity: 1;
+                transform: scale(1);
+            }
+            70% {
+                opacity: 0.7;
+                transform: scale(0.85);
+            }
+            to {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+        }
+
+        .close-btn {
+            position: sticky;
+            top: 20px;
+            align-self: flex-end;
+            width: clamp(40px, 5vw, 44px);
+            height: clamp(40px, 5vw, 44px);
+            background: #f5f5f5;
+            border: none;
+            font-size: clamp(20px, 3vw, 24px);
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-bottom: 20px;
+            z-index: 999999; 
+        }
+
+        .close-btn:hover {
+            background: #e0e0e0;
+            color: #ff4d4f;
+            transform: scale(1.1);
+        }
+
+        .social-card {
+            flex: 1;
+            min-width: 220px;
+            max-width: 1200px; 
+            width: 90%;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            position: relative;
+            margin: 0 auto 3rem auto;
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            animation: cardFlyIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 3.5s;
+            z-index: 5; 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .social-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .social-donate-title {
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+            text-align: center;
+            border-radius: 0 !important;
+        }
+
+        .social-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: clamp(10px, 2vw, 15px);
+            margin-bottom: 2rem;
+            border-radius: 0 !important;
+        }
+
+        .social-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #f8f9fa;
+            padding: clamp(8px, 2vw, 10px) clamp(15px, 2vw, 20px);
+            color: #333;
+            text-decoration: none;
+            font-size: clamp(0.8rem, 2vw, 1rem);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+        }
+
+        .social-item:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+            color: #ff4d4f;
+        }
+
+        .github-donate-btn {
+            display: inline-block;
+            background: #24292e;
+            color: #fff;
+            padding: clamp(10px, 2vw, 12px) clamp(20px, 2vw, 25px);
+            text-decoration: none;
+            font-size: clamp(0.8rem, 2vw, 1rem);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            width: fit-content;
+        }
+
+        .github-donate-btn:hover {
+            background: #ff4d4f;
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+        }
+
+        .donate-title {
+            text-align: center;
+            color: #666;
+            font-size: clamp(0.8rem, 2vw, 1rem);
+            margin-bottom: 1rem;
+            border-radius: 0 !important;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: clamp(20px, 3vw, 30px);
+            right: clamp(20px, 3vw, 30px);
+            width: clamp(45px, 5vw, 50px);
+            height: clamp(45px, 5vw, 50px);
+            background: linear-gradient(45deg, #ff004f, #a200ff);
+            color: #fff;
+            border: none;
+            font-size: clamp(18px, 3vw, 20px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 90;
+            box-shadow: 0 4px 10px rgba(255, 0, 79, 0.3);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 6px 15px rgba(255, 0, 79, 0.4);
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            border-radius: 0 !important;
+        }
+
+        @media (max-width: 480px) {
+            .countdown {
+                gap: 0.3rem;
+            }
+            .countdown-item {
+                margin: 0.3rem;
+            }
+            .info-card {
+                min-width: 100%;
+            }
+            .social-card {
+                min-width: 100%;
+                padding: 15px;
+            }
+            .card-fullscreen {
+                padding: 15px;
+                height: 90vh;
+            }
+            .close-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="fireworksCanvas"></canvas>
+
+    <!-- 标题区域 -->
+    <div class="title-section">
+        <h1 class="title">
+            <span class="title-icon">🎇</span>
+            春节
+        </h1>
+        <div class="date-tag">2026年02月17日 周二</div>
+        <div class="lunar-date">丙午年 正月初一</div>
+    </div>
+
+    <!-- 当前时间显示 -->
+    <div class="current-time" id="currentTime"></div>
+
+    <!-- 倒计时容器 -->
+    <div class="countdown" id="countdown">
+        <div class="countdown-item" id="days-item">
+            <div class="countdown-num" id="days-num">00</div>
+            <div class="countdown-unit">天</div>
+        </div>
+        <div class="countdown-separator">:</div>
+        <div class="countdown-item" id="hours-item">
+            <div class="countdown-num" id="hours-num">00</div>
+            <div class="countdown-unit">时</div>
+        </div>
+        <div class="countdown-separator">:</div>
+        <div class="countdown-item" id="minutes-item">
+            <div class="countdown-num" id="minutes-num">00</div>
+            <div class="countdown-unit">分</div>
+        </div>
+        <div class="countdown-separator">:</div>
+        <div class="countdown-item" id="seconds-item">
+            <div class="countdown-num" id="seconds-num">00</div>
+            <div class="countdown-unit">秒</div>
+        </div>
+    </div>
+
+    <div class="tip">2026春节即将到来...</div>
+
+    <!-- 节日祝福按钮 -->
+    <button class="blessing-btn" id="blessingBtn">点击获取春节祝福</button>
+
+    <button class="firework-btn" id="fireworkBtn">提前欣赏烟花秀</button>
+
+    <!-- 祝福弹窗 -->
+    <div class="blessing-modal" id="blessingModal">
+        <div class="blessing-modal-content">
+            <button class="blessing-modal-close" id="blessingModalClose">×</button>
+            <h2 class="blessing-title">春节暖心祝福</h2>
+            <ul class="blessing-list">
+                <li class="blessing-item">1. 新春快乐，阖家团圆，万事顺意！</li>
+                <li class="blessing-item">2. 龙年大吉，财源广进，步步高升！</li>
+                <li class="blessing-item">3. 新春纳福，岁岁平安，年年有余！</li>
+                <li class="blessing-item">4. 喜气洋洋迎新春，欢欢喜喜过大年！</li>
+                <li class="blessing-item">5. 新年新气象，万事皆可期，未来皆可盼！</li>
+                <li class="blessing-item">6. 愿你新的一年，平安喜乐，得偿所愿！</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 卡片容器 - 12张科普卡片 -->
+    <div class="info-cards-container">
+        <div class="info-cards-title">农历新年科普大全</div>
+        <div class="info-cards">
+            <div class="info-card" data-content="春节，即中国农历新年，俗称新春、新岁、岁旦等，又称过年、过大年，承载着阖家团圆、辞旧迎新的美好寓意。据史料记载，春节起源于殷商时期年头岁尾的祭神祭祖活动，至今已有超过4000年的历史。古代春节曾称“元日”“元旦”“正旦”等，辛亥革命后，公历1月1日被定为元旦，农历正月初一正式更名为“春节”。春节的时间在农历正月初一，通常会持续到正月十五元宵节，是中华民族最隆重、最热闹、影响最深远的传统节日，也是海内外华人共同的文化符号。">
+                <div class="info-title"><span>ℹ️</span>节日由来</div>
+                <div class="info-desc">春节起源于殷商祭神祭祖活动，至今已有4000余年历史，是华人最隆重的传统节日。</div>
+            </div>
+            <div class="info-card" data-content="春节传统习俗丰富多样，贯穿节前、节中、节后三个阶段，形成了完整的节日文化体系。节前，人们会进行扫尘迎新（腊月二十四，除尘布新）、贴春联、贴福字、挂红灯笼、购置年货、腌制腊味、准备年夜饭等；节中，大年初一拜年贺岁、给晚辈发压岁钱（寓意驱邪避灾、保佑平安），初二回娘家（女儿携女婿回门探亲），初三到初七走亲访友、逛庙会，初五迎财神（接五路财神，寓意财源广进）；节后，正月十五闹元宵、赏花灯、猜灯谜、吃汤圆，为春节画上圆满句号。此外，舞龙舞狮、踩高跷、扭秧歌、打腰鼓等民俗表演也为春节增添了浓厚的喜庆氛围。">
+                <div class="info-title"><span>⏰</span>节日习俗</div>
+                <div class="info-desc">春节习俗分节前、节中、节后，包含扫尘、拜年、闹元宵等丰富内容。</div>
+            </div>
+            <div class="info-card" data-content="春节美食承载着深厚的文化寓意，每一道菜都蕴含着人们对新年的美好期盼，形成了独具特色的节日饮食文化。饺子象征“更岁交子”，形状似元宝寓意招财进宝，馅料中包入硬币、红枣、花生等，吃到者寓意新年吉祥、早生贵子、长命百岁；鱼寓意“年年有余”，通常采用清蒸或红烧的做法，保留完整鱼形，象征生活富足、年年有余；年糕谐音“年高”，寓意步步高升、生活红火，有甜、咸两种口味，可蒸、可炸、可煮；汤圆寓意“团团圆圆”，是元宵节的必备美食，象征家庭和睦、幸福美满；腊肉、腊鸡、腊鸭等腊味则是春节期间的特色食材，香气浓郁，寓意生活红红火火；此外，还有春卷（寓意迎春纳福）、八宝饭（寓意五谷丰登）、鱼丸（寓意团团圆圆）等特色美食。">
+                <div class="info-title"><span>🍲</span>传统美食</div>
+                <div class="info-desc">春节美食各有寓意，饺子、鱼、年糕等承载着人们对新年的美好期盼。</div>
+            </div>
+            <div class="info-card" data-content="春联又称对联、门对、春贴，以工整、对偶、简洁、精巧的文字描绘时代背景，抒发美好愿望，是中国特有的文学形式和传统文化瑰宝。春联起源于古代的“桃符”，古人在桃木板上书写门神神荼、郁垒的名字，悬挂在门旁，用以驱邪避凶。到了明代，桃符逐渐被红纸取代，写上对联内容，形成了如今的春联，朱元璋更是下令民间家家户户都要张贴春联，从此春联盛行不衰。福字通常倒贴在门窗、墙壁上，寓意“福到（倒）”，表达了人们对幸福生活的向往。此外，窗花（剪纸艺术）、年画（木版年画最具特色）也是春节期间的传统装饰，色彩鲜艳，题材丰富，传递着新年的喜庆氛围。">
+                <div class="info-title"><span>📜</span>春联与福字</div>
+                <div class="info-desc">春联起源于桃符，福字倒贴寓意“福到”，窗花、年画是春节传统装饰。</div>
+            </div>
+            <div class="info-card" data-content="舞龙舞狮是春节重要的民俗表演，有着悠久的历史和深厚的文化内涵，是中华民族传统文化的重要组成部分。龙是中华民族的图腾，象征吉祥、权威、力量和祥瑞，舞龙寓意风调雨顺、五谷丰登、国泰民安、岁岁平安。舞龙时，多人协作操控龙身（通常为9-13节），伴随锣鼓声、鞭炮声做出腾飞、盘旋、翻滚、跳跃等动作，气势磅礴，极具观赏性。狮在传统文化中被视为瑞兽，能驱邪避凶、带来好运，舞狮分为南狮（广东狮，注重技巧和神态）和北狮（北方狮，更重气势，造型威武雄壮），舞狮过程中包含采青、登高、跳跃等高难度动作，寓意步步高升、招财进宝。舞龙舞狮表演通常在春节庙会、街头巷尾、企业门店前进行，为节日增添了浓厚的喜庆氛围。">
+                <div class="info-title"><span>🐉</span>舞龙舞狮</div>
+                <div class="info-desc">舞龙寓意风调雨顺，舞狮能驱邪避凶，分南狮和北狮，是春节特色民俗表演。</div>
+            </div>
+            <div class="info-card" data-content="压岁钱又称压祟钱、押岁钱、守岁钱等，是春节期间长辈给晚辈的节日礼金，承载着长辈对晚辈的关爱和美好祝福。压岁钱的起源可追溯到汉代，最初是一种辟邪物，古人认为铜钱有驱邪避灾的作用，将铜钱用红线串起，分给晚辈佩戴，用以保佑晚辈新年平安健康。到了明清时期，压岁钱逐渐演变为节日礼金，通常在除夕守岁后、大年初一拜年时发放，寓意压住邪祟、保佑平安、岁岁无忧。如今，压岁钱的形式从铜钱变为纸币，金额也越来越高，但其中蕴含的长辈对晚辈的关爱和美好期盼始终未变，同时也成为了春节期间增进亲情的重要纽带。">
+                <div class="info-title"><span>💰</span>压岁钱习俗</div>
+                <div class="info-desc">压岁钱起源于汉代，最初是辟邪物，如今是长辈对晚辈的关爱与美好祝福。</div>
+            </div>
+            <div class="info-card" data-content="元宵节又称上元节、小正月、元夕或灯节，是春节之后的第一个重要节日，时间在农历正月十五。元宵节的起源可追溯到西汉时期，汉武帝时期就有正月十五祭祀太一神的习俗，到了东汉时期，佛教传入中国，正月十五燃灯供佛的习俗逐渐盛行，后来与本土文化融合，形成了元宵节赏灯的传统。元宵节的主要习俗有赏花灯（灯展、彩灯造型多样）、猜灯谜（将谜语写在灯上，猜对有奖励）、吃汤圆（寓意团团圆圆）、舞龙舞狮、踩高跷等。元宵节是春节的收尾，也是一年中第一个月圆之夜，象征着团圆、美满、光明，至今仍是中华民族重要的传统节日。">
+                <div class="info-title"><span>🏮</span>元宵节由来</div>
+                <div class="info-desc">元宵节是春节后的首个重要节日，有赏花灯、猜灯谜、吃汤圆等传统习俗。</div>
+            </div>
+            <div class="info-card" data-content="春节庙会又称新春庙会，是春节期间在寺庙或民间广场举办的传统民俗活动，是集宗教祭祀、文艺表演、商贸交易、美食娱乐为一体的综合性文化活动。春节庙会起源于古代的祭祀活动，后来逐渐融入了商贸和娱乐元素，明清时期达到鼎盛，至今在全国各地仍十分盛行，如北京地坛庙会、上海城隍庙庙会、西安大唐不夜城庙会等。庙会的主要内容包括：宗教祭祀（拜财神、拜佛祖等）、民俗表演（舞龙舞狮、皮影戏、杂技、戏曲等）、特色小吃（糖葫芦、驴打滚、炸灌肠等）、小商品交易（春联、福字、玩具、手工艺品等），是春节期间人们休闲娱乐、感受节日氛围的重要场所。">
+                <div class="info-title"><span>🎪</span>春节庙会</div>
+                <div class="info-desc">春节庙会集祭祀、表演、商贸、美食于一体，是感受节日氛围的重要场所。</div>
+            </div>
+            <div class="info-card" data-content="腊月二十三（北方）或腊月二十四（南方）又称小年，是春节的前奏，标志着春节的筹备工作正式进入尾声。小年的主要习俗有祭灶王（祭祀灶王爷，祈求灶王爷上天言好事、下界保平安）、扫尘迎新（除尘布新，寓意扫除旧年晦气，迎接新年吉祥）、剪窗花（剪制各种吉祥图案的窗花，装饰门窗）、贴春联（提前张贴春联，营造节日氛围）、吃灶糖（麦芽糖制成，寓意粘住灶王爷的嘴，不让他说坏话）等。南北小年日期不同，主要是因为古代“官三民四船五”的习俗，官员在腊月二十三过小年，百姓在腊月二十四，渔民在腊月二十五，后来北方逐渐沿袭了官民同天的习俗，南方则保留了腊月二十四过小年的传统。">
+                <div class="info-title"><span>🧹</span>小年习俗</div>
+                <div class="info-desc">小年分南北（23日/24日），有祭灶王、扫尘、吃灶糖等传统习俗。</div>
+            </div>
+            <div class="info-card" data-content="除夕又称年三十、年夜，是农历一年的最后一天，也是春节最重要的日子之一，承载着阖家团圆、辞旧迎新的核心寓意。除夕的主要习俗有贴春联、贴福字、挂灯笼、年夜饭（全家团聚共进晚餐，菜品丰富，寓意团圆美满）、守岁（全家通宵不眠，寓意珍惜时光、辞旧迎新、保佑长辈长寿）、放鞭炮（寓意驱邪避灾、迎接新年）、发压岁钱（长辈给晚辈发放，寓意保佑平安）等。年夜饭是除夕的核心环节，全家围坐在一起，品尝美食，畅谈过往，展望未来，是一年中最温馨、最隆重的家庭聚餐。守岁则体现了人们对旧年的不舍和对新年的期盼，至今仍是除夕最重要的习俗之一。">
+                <div class="info-title"><span>🌙</span>除夕习俗</div>
+                <div class="info-desc">除夕是农历年最后一天，有年夜饭、守岁、放鞭炮等核心春节习俗。</div>
+            </div>
+            <div class="info-card" data-content="春节服饰又称新春服饰，以红色为主色调，象征着吉祥、喜庆、红火，是春节文化的重要组成部分。春节穿红衣的习俗起源于古代的辟邪观念，古人认为红色是正色，具有驱邪避灾、保佑平安的作用，后来逐渐演变为节日喜庆的象征。春节服饰的款式多样，传统服饰有唐装、汉服、旗袍等，现代服饰则在保留红色主色调的基础上，融入了时尚元素，如红色毛衣、红色外套、红色围巾等。无论传统还是现代，春节服饰都以红色为核心，传递着人们对新年的美好期盼，同时也成为了春节期间一道亮丽的风景线。">
+                <div class="info-title"><span>👘</span>春节服饰</div>
+                <div class="info-desc">春节服饰以红色为主色调，象征吉祥喜庆，分传统唐装/汉服和现代时尚款式。</div>
+            </div>
+            <div class="info-card" data-content="春节是中华民族最具影响力的传统节日，也是海内外华人共同的文化纽带，随着中华文化的传播，春节已成为世界性的节日。目前，全球已有超过20个国家和地区将春节定为法定节假日或官方庆祝节日，如韩国、越南、新加坡、马来西亚等，此外，美国、英国、法国等西方国家也会在春节期间举办盛大的庆祝活动（舞龙舞狮、灯展等）。春节的海外传播，不仅展现了中华文化的独特魅力，也促进了中外文化的交流与融合，成为了连接海内外华人、传递中华文化自信的重要桥梁。">
+                <div class="info-title"><span>🌍</span>海外春节</div>
+                <div class="info-desc">春节已成为世界性节日，20余个国家和地区将其定为法定或官方庆祝节日。</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 卡片全屏遮罩层 -->
+    <div class="card-fullscreen-mask" id="fullscreenMask">
+        <div class="card-fullscreen" id="fullscreenCard">
+            <button class="close-btn" id="closeBtn">×</button>
+            <div id="fullscreenCardContent"></div>
+        </div>
+    </div>
+
+    <!-- 社交区域 -->
+    <div class="social-card">
+        <div class="social-donate-title">我的社交账号</div>
+        <div class="social-links">
+            <a href="https://github.com/long-bili" target="_blank" class="social-item">
+                <span>🐙</span> GitHub
+            </a>
+            <a href="https://space.bilibili.com/612400018" target="_blank" class="social-item">
+                <span>📱</span> bilibili
+            </a>
+            <a href="https://www.zhihu.com/people/laolongqwq" target="_blank" class="social-item">
+                <span>🏠</span> 知乎
+            </a>
+            <a href="https://qm.qq.com/q/9yQdmc6Ypi" class="social-item">
+                <span>🐧</span> Q群
+            </a>
+            <a href="#" target="_blank" class="social-item">
+                <span>📕</span> 小红书
+            </a>
+            <a href="#" target="_blank" class="social-item">
+                <span>🐦</span> 微博
+            </a>
+        </div>
+        <div class="donate-section">
+            <div class="donate-title">如果觉得这个页面不错，欢迎支持我～</div>
+            <a href="https://github.com/long-bili/long-bili.github.io" target="_blank" class="github-donate-btn">
+                🐙 GitHub 捐赠 / 星标支持
+            </a>
+        </div>
+    </div>
+
+    <!-- 回到顶部按钮 -->
+    <button class="back-to-top" id="backToTop">↑</button>
+
+    <script>
+        // ************************ 自定义配置项 ************************
+        // 1. 烟花秀跳转地址（可修改为你的2026.html或其他链接）
+        const FIREWORK_JUMP_URL = "2026.html"; 
+        // 2. 倒计时结束后跳转地址（可自定义修改）
+        const COUNTDOWN_END_JUMP_URL = "2026.html"; 
+        // *************************************************************
+
+        // 目标时间：2026春节（2026年2月17日00:00:00）
+        const targetTime = new Date(2026, 1, 17, 0, 0, 0, 0).getTime();
+
+        // 倒计时元素
+        const daysNum = document.getElementById('days-num');
+        const hoursNum = document.getElementById('hours-num');
+        const minutesNum = document.getElementById('minutes-num');
+        const secondsNum = document.getElementById('seconds-num');
+        const daysItem = document.getElementById('days-item');
+        const hoursItem = document.getElementById('hours-item');
+        const minutesItem = document.getElementById('minutes-item');
+        const secondsItem = document.getElementById('seconds-item');
+
+        // 存储上一次数字
+        let lastValues = {
+            days: '00',
+            hours: '00',
+            minutes: '00',
+            seconds: '00'
+        };
+
+        // 格式化数字
+        const formatNum = (num) => num.toString().padStart(2, "0");
+
+        // 数字抛出效果
+        function createFlyingNum(value, container) {
+            const flyingNum = document.createElement('div');
+            flyingNum.className = 'flying-num';
+            flyingNum.innerText = value;
+            container.appendChild(flyingNum);
+            setTimeout(() => {
+                flyingNum.remove();
+            }, 1000);
+        }
+
+        // 更新倒计时
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const remainingTime = targetTime - now;
+
+            if (remainingTime <= 0) {
+                document.getElementById('countdown').innerHTML = "<div style='font-size: clamp(1.5rem, 7vw, 5rem); background: linear-gradient(180deg, #ff004f, #a200ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; border-radius: 0 !important;'>春节已至！正在跳转...</div>";
+                clearInterval(countdownTimer);
+                // 倒计时结束后自动跳转
+                setTimeout(() => {
+                    window.location.href = COUNTDOWN_END_JUMP_URL;
+                }, 1500); // 延迟1.5秒跳转，给用户视觉反馈
+                return;
+            }
+
+            const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+
+            const currentValues = {
+                days: formatNum(days),
+                hours: formatNum(hours),
+                minutes: formatNum(minutes),
+                seconds: formatNum(seconds)
+            };
+
+            if (currentValues.days !== lastValues.days) {
+                createFlyingNum(lastValues.days, daysItem);
+                daysNum.innerText = currentValues.days;
+                lastValues.days = currentValues.days;
+            }
+            if (currentValues.hours !== lastValues.hours) {
+                createFlyingNum(lastValues.hours, hoursItem);
+                hoursNum.innerText = currentValues.hours;
+                lastValues.hours = currentValues.hours;
+            }
+            if (currentValues.minutes !== lastValues.minutes) {
+                createFlyingNum(lastValues.minutes, minutesItem);
+                minutesNum.innerText = currentValues.minutes;
+                lastValues.minutes = currentValues.minutes;
+            }
+            if (currentValues.seconds !== lastValues.seconds) {
+                createFlyingNum(lastValues.seconds, secondsItem);
+                secondsNum.innerText = currentValues.seconds;
+                lastValues.seconds = currentValues.seconds;
+            }
+        }
+
+        // 初始化倒计时
+        updateCountdown();
+        const countdownTimer = setInterval(updateCountdown, 1000);
+
+        // 更新当前时间
+        function updateCurrentTime() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = formatNum(now.getMonth() + 1);
+            const day = formatNum(now.getDate());
+            const hour = formatNum(now.getHours());
+            const minute = formatNum(now.getMinutes());
+            const second = formatNum(now.getSeconds());
+            document.getElementById('currentTime').innerText = `当前时间：${year}年${month}月${day}日 ${hour}:${minute}:${second}`;
+        }
+        updateCurrentTime();
+        setInterval(updateCurrentTime, 1000);
+
+        // 卡片全屏逻辑
+        const infoCards = document.querySelectorAll('.info-card');
+        const fullscreenMask = document.getElementById('fullscreenMask');
+        const fullscreenCard = document.getElementById('fullscreenCard');
+        const fullscreenCardContent = document.getElementById('fullscreenCardContent');
+        const closeBtn = document.getElementById('closeBtn');
+
+        // 卡片点击全屏
+        infoCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const cardContent = card.getAttribute('data-content');
+                const cardTitle = card.querySelector('.info-title').innerText;
+                // 设置全屏卡片内容
+                fullscreenCardContent.innerHTML = `<h2 style="font-size: clamp(1.5rem, 3vw, 2rem); color: #333; margin-bottom: 20px; border-radius: 0 !important;">${cardTitle}</h2><p style="font-size: clamp(1rem, 2vw, 1.2rem); color: #666; line-height: 1.8; border-radius: 0 !important;">${cardContent}</p>`;
+                // 显示遮罩层，添加入场动画
+                fullscreenMask.style.display = 'flex';
+                fullscreenCard.classList.add('in');
+                fullscreenCard.classList.remove('out');
+                // 强制回顶，双重保障
+                fullscreenCard.scrollTop = 0;
+                window.scrollTo(0, 0); // 页面同时回顶，彻底解决底部遮挡
+                // 禁止页面滚动
+                document.body.style.overflow = 'hidden';
+                // 强制刷新遮罩层显示
+                fullscreenMask.offsetHeight; // 触发重绘
+            });
+        });
+
+        // 关闭按钮：添加退场动画
+        function closeFullscreenCard() {
+            // 添加退场动画
+            fullscreenCard.classList.add('out');
+            fullscreenCard.classList.remove('in');
+            // 动画结束后隐藏遮罩层
+            setTimeout(() => {
+                fullscreenMask.style.display = 'none';
+                // 恢复页面滚动
+                document.body.style.overflow = 'auto';
+            }, 500); // 与退场动画时长一致
+        }
+
+        // 绑定关闭按钮事件
+        closeBtn.addEventListener('click', closeFullscreenCard);
+
+        // 点击遮罩层空白处关闭
+        fullscreenMask.addEventListener('click', (e) => {
+            if (e.target === fullscreenMask) {
+                closeFullscreenCard();
+            }
+        });
+
+        // 祝福弹窗逻辑
+        const blessingBtn = document.getElementById('blessingBtn');
+        const blessingModal = document.getElementById('blessingModal');
+        const blessingModalClose = document.getElementById('blessingModalClose');
+
+        // 打开祝福弹窗
+        blessingBtn.addEventListener('click', () => {
+            blessingModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        });
+
+        // 关闭祝福弹窗
+        blessingModalClose.addEventListener('click', () => {
+            blessingModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+
+        // 点击弹窗空白处关闭
+        blessingModal.addEventListener('click', (e) => {
+            if (e.target === blessingModal) {
+                blessingModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // 回到顶部按钮逻辑
+        const backToTop = document.getElementById('backToTop');
+
+        // 滚动监听
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTop.style.display = 'flex';
+            } else {
+                backToTop.style.display = 'none';
+            }
+        });
+
+        // 点击回到顶部（平滑滚动）
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // 烟花特效：保留提前欣赏烟花秀功能 + 跳转功能
+        const canvas = document.getElementById('fireworksCanvas');
+        const ctx = canvas.getContext('2d');
+        const fireworkBtn = document.getElementById('fireworkBtn');
+        let fireworkActive = true; // 默认开启烟花
+        let hasJumped = false; // 防止重复跳转
+
+        // 适配窗口大小
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // 烟花粒子类
+        class FireworkParticle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.count = Math.floor(Math.random() * 50) + 30;
+                this.particles = [];
+                this.initParticles();
+            }
+
+            initParticles() {
+                const colors = ["#ff004f", "#ff9d00", "#ffeb3b", "#00ff9d", "#4d79ff", "#a200ff"];
+                this.particleColor = colors[Math.floor(Math.random() * colors.length)];
+
+                for (let i = 0; i < this.count; i++) {
+                    const angle = (Math.PI * 2) / this.count * i;
+                    const speed = Math.random() * 5 + 2;
+                    this.particles.push({
+                        x: this.x,
+                        y: this.y,
+                        vx: Math.cos(angle) * speed,
+                        vy: Math.sin(angle) * speed,
+                        alpha: 1,
+                        gravity: 0.05,
+                        decay: Math.random() * 0.01 + 0.005,
+                    });
+                }
+            }
+
+            update() {
+                let isAllDead = true;
+                for (let i = 0; i < this.particles.length; i++) {
+                    const p = this.particles[i];
+                    if (p.alpha > 0) {
+                        p.vy += p.gravity;
+                        p.x += p.vx;
+                        p.y += p.vy;
+                        p.alpha -= p.decay;
+                        isAllDead = false;
+                    }
+                }
+                return isAllDead;
+            }
+
+            draw() {
+                for (let i = 0; i < this.particles.length; i++) {
+                    const p = this.particles[i];
+                    if (p.alpha > 0) {
+                        ctx.save();
+                        ctx.globalAlpha = p.alpha;
+                        ctx.fillStyle = this.particleColor;
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.restore();
+                    }
+                }
+            }
+        }
+
+        let fireworks = [];
+        // 创建烟花
+        function createFirework() {
+            if (!fireworkActive) return;
+            const x = Math.random() * canvas.width;
+            const y = Math.random() * canvas.height;
+            fireworks.push(new FireworkParticle(x, y));
+            setTimeout(createFirework, Math.random() * 400 + 100);
+        }
+
+        // 动画循环
+        function animateFireworks() {
+            ctx.fillStyle = "rgba(255, 230, 239, 0.1)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = fireworks.length - 1; i >= 0; i--) {
+                const fw = fireworks[i];
+                const isDead = fw.update();
+                fw.draw();
+                if (isDead) {
+                    fireworks.splice(i, 1);
+                }
+            }
+
+            requestAnimationFrame(animateFireworks);
+        }
+
+        // 烟花秀按钮：切换烟花状态 + 跳转网页
+        fireworkBtn.addEventListener('click', () => {
+            // 首次点击（按钮显示“提前欣赏烟花秀”时），先跳转
+            if (fireworkBtn.innerText === "提前欣赏烟花秀" && !hasJumped) {
+                // 打开新窗口跳转（不影响当前倒计时页面）
+                window.open(FIREWORK_JUMP_URL, "_blank");
+                hasJumped = true; // 标记已跳转，防止重复打开
+            }
+            // 切换烟花开启/关闭状态
+            fireworkActive = !fireworkActive;
+            if (fireworkActive) {
+                fireworkBtn.innerText = '关闭烟花秀';
+                createFirework(); // 重新开启烟花
+            } else {
+                fireworkBtn.innerText = '提前欣赏烟花秀';
+                fireworks = []; // 清空现有烟花
+                hasJumped = false; // 重置跳转标记，方便再次点击跳转
+            }
+        });
+
+        // 启动烟花
+        createFirework();
+        animateFireworks();
+    </script>
+</body>
+</html>
